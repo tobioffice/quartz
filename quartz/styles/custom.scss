@@ -1,3 +1,86 @@
 @use "./base.scss";
 
+// GT Super font definition
+@font-face {
+  font-family: "GT Super";
+  src: url("/static/gt-super-400-normal.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+// JetBrains Mono font definitions
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/static/jetbrains-mono-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/static/jetbrains-mono-600-normal.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+// Override body font to use GT Super and code font to use JetBrains Mono
+:root {
+  --bodyFont: "GT Super", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --codeFont: "JetBrains Mono", ui-monospace, SFMono-Regular, SF Mono, Menlo, monospace;
+}
+
+// Fix Explorer heading clipping when collapsed
+.explorer {
+  & .folder-outer {
+    & h2 {
+      min-height: 1.2rem !important;
+      line-height: 1.2rem !important;
+    }
+  }
+}
+
+.explorer.collapsed {
+    flex: 0 2.2rem;
+}
+
+// Improve code block styling
+code {
+  font-weight: 500 !important;
+  font-size: 0.9em !important;
+}
+
+pre {
+  & > code {
+    font-weight: 500 !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+// Increase base font size and improve readability
+body {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+p, li {
+  font-size: 1.2rem;
+  line-height: 1.75;
+}
+
+// Slightly larger headings for better hierarchy
+h1 {
+  font-size: 2.3rem !important;
+}
+
+h2 {
+  font-size: 1.7rem !important;
+}
+
+h3 {
+  font-size: 1.4rem !important;
+}
+
 // put your custom CSS here!
