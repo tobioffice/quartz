@@ -10,6 +10,16 @@ This space is a curated collection of my thoughts, experiments, and learnings �
 
 ---
 
+### Blogs
+- [[How I Built an AI Chatbot That Knows Everything About Me]]
+[[AI Attendance Bot]]
+- [[Modern & Minimal VS Code Customization for 2025-2026]]
+
+
+### concepts
+- [[RAG]]
+
+---
 ## 📚 How to Explore
 
 Feel free to dive into any blog post by clicking on the titles listed in the **left sidebar**. Each post is crafted with care and clarity — no fluff, just practical insights and expressive storytelling.

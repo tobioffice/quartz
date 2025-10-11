@@ -1,0 +1,2 @@
+
+A **system prompt** is an initial set of instructions, context, or persona provided to a large language model (LLM) prior to user interaction. Its purpose is to guide the model's behavior, define its role, establish constraints, specify output formats, or provide background information, thereby shaping how the LLM processes subsequent user inputs and generates responses.
