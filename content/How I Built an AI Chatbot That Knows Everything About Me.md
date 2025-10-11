@@ -27,4 +27,26 @@ Well, that works, but it's not scalable or practical for several key reasons:
 3.  **Relevance and Focus:** You rarely need *all* information about you for *every* query. Dumping everything in the system prompt makes the LLM sift through irrelevant data, potentially reducing its ability to focus on the specific task or leading to the "lost in the middle" problem where important details are overlooked. [[RAG]] ensures only the most relevant snippets are provided.
 4. **Maintenance and Updates:** If your personal information changes or you publish/update a blog, you'd constantly be rewriting and updating a colossal system prompt. With a vector database, you update specific documents, and the system dynamically retrieves the freshest information.
 
+### so let's just build the thing ❤️‍🔥
+
+#### 1. [[vector database]] setup
+I choose ChromaDB for its simplicity, 
+you can have a cloud instance worth 5$ for the start on the [ChromaDB](https://www.trychroma.com) official website or you can absolutely spin a local container 
+
+**DOCKER** :
+```bash
+docker run -v ./chroma-data:/data -p 8000:8000 chromadb/chroma
+```
+
+PODMAN:
+```bash
+docker run --network=host -v ./chroma-data:/data -p 8000:8000 chromadb/chroma
+```
+
+
+
+
 ![[rag workflow.png]]
+
+
+

@@ -12,12 +12,13 @@ This space is a curated collection of my thoughts, experiments, and learnings â€
 
 ### Blogs
 - [[How I Built an AI Chatbot That Knows Everything About Me]]
-[[AI Attendance Bot]]
 - [[Modern & Minimal VS Code Customization for 2025-2026]]
 
 
 ### concepts
 - [[RAG]]
+- [[System Prompt]]
+- [[LLM]]
 
 ---
 ## ðŸ“š How to Explore
