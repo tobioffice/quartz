@@ -43,7 +43,7 @@ docker run -v ./chroma-data:/data -p 8000:8000 chromadb/chroma
 docker run --network=host -v ./chroma-data:/data -p 8000:8000 chromadb/chroma
 ```
 
-hey
+small change
 
 
 ![[rag workflow.png]]

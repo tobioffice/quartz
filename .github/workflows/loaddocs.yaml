@@ -20,4 +20,4 @@ jobs:
           CHROMA_API_KEY: ${{ secrets.CHROMA_API_KEY }}
           CHROMA_HOST: ${{ secrets.CHROMA_HOST }}
           CHROMA_PORT: ${{ secrets.CHROMA_PORT }}
-        run: node dist/loadDocs.js
+        run: node scripts/loadDocs.js
