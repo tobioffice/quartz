@@ -13,13 +13,13 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
+      - run: npx pnpm i
       - name: Build TypeScript
         run: npx tsc scripts/loadDocs.ts --outDir dist
       - name: Run ingester
         env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          CHROMA_API_KEY: ${{ secrets.CHROMA_API_KEY }}
           CHROMA_HOST: ${{ secrets.CHROMA_HOST }}
           CHROMA_PORT: ${{ secrets.CHROMA_PORT }}
-          CHROMA_API_IMPL: ${{ secrets.CHROMA_API_IMPL }}
-          CHROMA_AUTH_TOKEN: ${{ secrets.CHROMA_AUTH_TOKEN }}
         run: node dist/loadDocs.js
