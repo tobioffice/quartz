@@ -1,0 +1,25 @@
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.md"
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build TypeScript
+        run: npx tsc scripts/loadDocs.ts --outDir dist
+      - name: Run ingester
+        env:
+          CHROMA_HOST: ${{ secrets.CHROMA_HOST }}
+          CHROMA_PORT: ${{ secrets.CHROMA_PORT }}
+          CHROMA_API_IMPL: ${{ secrets.CHROMA_API_IMPL }}
+          CHROMA_AUTH_TOKEN: ${{ secrets.CHROMA_AUTH_TOKEN }}
+        run: node dist/loadDocs.js
