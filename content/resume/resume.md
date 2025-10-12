@@ -3,7 +3,7 @@
 
 **Email:** muraliaggipothu@gmail.com
 **Phone:** +91-62813-73180
-**Portfolio:** [Portfolio](https://portfolio.tobioffice.dev) | **GitHub:** [Github](https://github.com/tobioffice) | **LinkedIn:** [LinkedIn](https://www.linkedin.com/in/tobioffice/)
+**Portfolio:** [Portfolio](https://portfolio.tobioffice.dev) | **GitHub:** [Github](https://github.com/tobioffice) | **LinkedIn:** [LinkedIn](https://www.linkedin.com/in/tobioffice)
 **Location:** Vidyanagar, AP (Open to Remote)
 
 ## Professional Summary

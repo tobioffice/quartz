@@ -11,9 +11,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
-      - run: npx pnpm i
+      - run: npm i
       - name: Build TypeScript
         run: npx tsc scripts/loadDocs.ts --outDir dist
       - name: Run ingester
