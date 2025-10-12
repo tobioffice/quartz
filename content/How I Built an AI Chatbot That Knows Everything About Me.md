@@ -2,7 +2,7 @@
 
 Recently, I realized that my old portfolio -- [portfolio.tobioffice.dev](https://portfolio.tobioffice.dev) website doesn’t quite capture _who I am_ or introduce me effectively to visitors. So, I decided to design a new portfolio from scratch — clean, minimal, and easy to read.
 
-While exploring other developers’ portfolios for inspiration, one feature really stood out to me: an AI chatbot integrated right into the site. It knew everything about the creator and could even interact with their blogs as if it _was_ them. I found that idea fascinating 
+While exploring other developers’ portfolios for inspiration, one feature really stood out to me: an AI chatbot integrated right into the site. It knew everything about the creator and could even interact with their blogs as if it _was_ them. I found that idea fascinating
 
 > "a living, intelligent extension of one’s own work."
 
@@ -30,8 +30,8 @@ Well, that works, but it's not scalable or practical for several key reasons:
 ## so let's just start building ❤️‍🔥
 
 ### 1. [[vector database]] setup
-I choose ChromaDB for its simplicity, 
-you can have a cloud instance worth 5$ for the start on the [ChromaDB](https://www.trychroma.com) official website or you can absolutely spin a local container 
+I choose ChromaDB for its simplicity,
+you can have a cloud instance worth 5$ for the start on the [ChromaDB](https://www.trychroma.com) official website or you can absolutely spin a local container
 
 **DOCKER** :
 ```bash
@@ -43,10 +43,7 @@ docker run -v ./chroma-data:/data -p 8000:8000 chromadb/chroma
 docker run --network=host -v ./chroma-data:/data -p 8000:8000 chromadb/chroma
 ```
 
-
+hey
 
 
 ![[rag workflow.png]]
-
-
-

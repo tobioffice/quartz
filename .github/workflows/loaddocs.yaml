@@ -14,8 +14,6 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm i
-      - name: Build TypeScript
-        run: npx tsc scripts/loadDocs.ts --outDir dist
       - name: Run ingester
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
