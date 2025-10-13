@@ -207,7 +207,7 @@ Q: "What are your thoughts on AI in web development?"
 A: "Based on my blog posts and projects, I see AI as a powerful tool for enhancing developer productivity..."
 
 
-### 4. the final workflow 🎉
+### 4. the simple workflow 
 1. The user sends a message to Tobi Support.
 2. Tobi Support performs a similarity search on the vector database containing all blog content.
 3. The retrieved relevant information is attached as context to the user’s message.
@@ -239,7 +239,7 @@ A: "Based on my blog posts and projects, I see AI as a powerful tool for enhanci
 
 Here's a detailed view of how the different components in the system interact:
 
-![[Pasted image 20251013212056.png]]
+![[Pasted image 20251013213600.png]]
 
 The system consists of five main components:
 1. **Frontend**: Next.js-based chat interface with state management
@@ -249,4 +249,3 @@ The system consists of five main components:
 5. **Document Pipeline**: Processes Markdown files into searchable chunks
 
 Each user interaction flows through these components to provide accurate, context-aware responses based on my content.
-
