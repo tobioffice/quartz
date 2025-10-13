@@ -33,11 +33,12 @@ Seeking a software engineering internship to deliver features end‑to‑end, al
 - Implemented search/filter functionality and automated book borrowing workflow with due date tracking system
 - Delivered complete production-ready hackathon project in under 2 hours using GitHub Copilot and rapid prototyping
 
-### SyntaxSoul — Blog Platform — [blogs.tobioffice.dev](https://SyntaxSoul.tobioffice.dev)
+### SyntaxSoul (deprecated) — Blog Platform — [syntaxsoul.tobioffice.dev](https://SyntaxSoul.tobioffice.dev)
 *Next.js, Editor.js, Cloudinary, TypeScript*
 
 - Developed modular blog platform with rich text editor (Editor.js) and Cloudinary integration for image optimization
 - Deployed on Vercel with custom domain configuration and Cloudflare DNS management for improved performance
+- visit [blog.tobioffice.dev](blog.tobioffice.dev) for my up to date blogs
 
 ### NbkristQik — Academic Information Bot — [t.me/nbkrist_qik](https://t.me/nbkrist_qik)
 *TypeScript, Telegram Bot API, Cheerio*
