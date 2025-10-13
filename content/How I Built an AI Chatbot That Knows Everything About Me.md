@@ -67,7 +67,7 @@ if you want to do the same here is your command:
 	```
 
 > [!NOTE]
-> make sure to configure firewall rules according to you cloud provider
+> make sure to configure firewall rules according to your cloud provider
 
 ### 2. Creating a workflow to load documents to the vector DB
 For better organisation, I highly recommend keeping all your blogs in a centralised folder. ==Speaking of which, I've actually configured an Obsidian workflow for publishing my own blogs! Let me know if you'd be interested in a guide on how to set up your very own blog publishing workflow.==
