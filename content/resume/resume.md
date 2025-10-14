@@ -3,7 +3,7 @@
 
 **Email:** muraliaggipothu@gmail.com
 **Phone:** +91-62813-73180
-**Portfolio:** [Portfolio](https://portfolio.tobioffice.dev) | **GitHub:** [Github](https://github.com/tobioffice) | **LinkedIn:** [LinkedIn](https://www.linkedin.com/in/tobioffice)
+**Portfolio:** [Portfolio](https://tobioffice.dev) | **GitHub:** [Github](https://github.com/tobioffice) | **LinkedIn:** [LinkedIn](https://www.linkedin.com/in/tobioffice)
 **Location:** Vidyanagar, AP (Open to Remote)
 
 ## Professional Summary
@@ -38,7 +38,7 @@ Seeking a software engineering internship to deliver features end‑to‑end, al
 
 - Developed modular blog platform with rich text editor (Editor.js) and Cloudinary integration for image optimization
 - Deployed on Vercel with custom domain configuration and Cloudflare DNS management for improved performance
-- visit [blog.tobioffice.dev](blog.tobioffice.dev) for my up to date blogs
+- visit [blog.tobioffice.dev](https://blog.tobioffice.dev) for my up to date blogs
 
 ### NbkristQik — Academic Information Bot — [t.me/nbkrist_qik](https://t.me/nbkrist_qik)
 *TypeScript, Telegram Bot API, Cheerio*
