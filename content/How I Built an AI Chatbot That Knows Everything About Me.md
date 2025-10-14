@@ -104,7 +104,7 @@ docker run --network=host -v ./chroma-data:/data -p 8000:8000 chromadb/chroma
 I am using an **Oracle Ubuntu Virtual Machine** to deploy the container, as public access to the database is required and don't want use Chroma's cloud platform.
 
 If you want to do the same here is your command:
-
+a
 1. Create a volume:
 	```bash
 	   docker volume create chroma_data
