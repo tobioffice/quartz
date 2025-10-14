@@ -4,7 +4,7 @@ import * as Plugin from "./quartz/plugins"
 /**
  * Quartz 4 Configuration
  *
- * See https://quartz.jzhao.xyz/configuration for more information.
+ * See https://blog.tobioffice.dev/configuration for more information.
  */
 const config: QuartzConfig = {
   configuration: {
@@ -16,7 +16,7 @@ const config: QuartzConfig = {
       provider: "plausible",
     },
     locale: "en-US",
-    baseUrl: "quartz.jzhao.xyz",
+    baseUrl: "blog.tobioffice.dev",
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
     theme: {
