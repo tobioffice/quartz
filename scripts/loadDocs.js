@@ -29,10 +29,13 @@ export const loadDocs = (filePath) => {
       if (entry.isDirectory()) {
         getAllMdFiles(fullPath)
       } else if (entry.isFile() && entry.name.endsWith(".md")) {
+        const cleanDir = dir.replace(/^\.\/content|^content/, "")
+        const cleanName = entry.name.replace(/&/g, "-and-").replace(/ /g, "-").slice(0, -3)
+        const source_url = "https://blog.tobioffice.dev" + cleanDir + "/" + cleanName
         const content = fs.readFileSync(fullPath, "utf-8")
         documents.push({
           pageContent: content,
-          metadata: { source: entry.name },
+          metadata: { source: source_url },
         })
       }
     })
