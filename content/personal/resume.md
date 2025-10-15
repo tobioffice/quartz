@@ -30,7 +30,7 @@ I am actively seeking internship opportunities to apply my skills in real-world 
 
 - Developed modular blog platform with rich text editor (Editor.js) and Cloudinary integration for image optimization
 - Deployed on Vercel with custom domain configuration and Cloudflare DNS management for improved performance
-- visit my new blog platform "Blogs": [blog.tobioffice.dev](https://blog.tobioffice.dev) for my up to date blogs
+- visit my new blog platform using Quartz 4 : [blog.tobioffice.dev](https://blog.tobioffice.dev) for my up to date blogs
 
 ### NbkristQik — Academic Information Bot 
 [t.me/nbkrist_qik](https://t.me/nbkrist_qik)
