@@ -12,6 +12,7 @@ This space is a curated collection of my thoughts, experiments, and learnings â€
 
 checkout my [[resume]] if you want to know about me
 ### My Blogs
+- [[Building a Windows 11 Notepad for Linux]]
 - [[How I Built an AI Chatbot That Knows Everything About Me]]
 - [[Modern & Minimal VS Code Customization for 2025-2026]]
 
