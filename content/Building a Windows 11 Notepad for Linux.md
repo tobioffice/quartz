@@ -10,7 +10,7 @@ I wanted the rounded Windows 11 window: a transparent surface, a 1 px border, an
 
 The border was the next problem. I stroked a 1 px frame on the window edge, which puts half of the stroke outside the opaque fill. On X11 without a compositing manager, that half pixel showed up as a black band around the window. The stroke now sits inset by half a pixel, and rounded corners default to on only when WAYLAND_DISPLAY is set. The View menu can switch them either way.
 
-Plain X11 needed an actual cut in the window, not just a transparent surface. src/shape.rs is about 140 lines that use the X Shape extension through x11rb. It finds the app window by _NET_WM_PID, falls back to WM_CLASS, then applies a rounded bounding region. A maximized window gets a rectangle instead. The mask updates only when the window size changes by more than a pixel, at most every 0.15 seconds, and it runs on its own thread. Windows can disappear while it walks the tree, so those errors are ignored.
+Plain X11 needed an actual cut in the window, not just a transparent surface. src/shape.rs is about 150 lines that use the X Shape extension through x11rb. It finds the app window by _NET_WM_PID, falls back to WM_CLASS, then applies a rounded bounding region. A maximized window gets a rectangle instead. The mask updates only when the window size changes by more than a pixel, at most every 0.15 seconds, and it runs on its own thread. Windows can disappear while it walks the tree, so those errors are ignored.
 
 The offscreen renderer could not show this one. I only saw the black corners after dragging the window into a bare X11 session.
 
@@ -35,4 +35,4 @@ The help output still lists --wgpu and --gl, which is how I know the renderer sw
 
 The UI can render without a window too. src/bin/shot.rs draws the app offscreen to a PNG, with flags for the dark theme, find bar, syntax highlighting, save dialog, hover positions and a resize test. I could look at the light and dark layouts without starting a compositor, which matters on a build machine with no display.
 
-Distribution is still rough. The AppImage needs FUSE 2, or the extract and run flag, and the binary needs glibc 2.39 or newer, so an older distro has to build from source. The release is x86_64 only, and the only formats are the AppImage and the tarball.
+Distribution is still rough. The AppImage needs FUSE 2, or the extract and run flag, and the binary needs glibc 2.39 or newer, so an older distro has to build from source. The release is x86_64 only, and the only formats are the AppImage and the tarball. Both are on [GitHub](https://github.com/tobioffice/elevenpad).
