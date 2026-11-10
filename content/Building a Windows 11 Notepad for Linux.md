@@ -2,7 +2,7 @@ Windows 11 Notepad is one of the few default apps I like. It opens fast, keeps t
 
 By 3 November it was 17 commits, about 3,600 lines in src, and 15 tagged releases from 0.2.0 to 0.4.9. The text editor was the easy half. egui already has a multiline TextEdit, so the work went into the frame: a title bar, tab strip, menu bar, status bar and two file dialogs that I drew myself, because matching the Windows 11 app matters more than being another generic Linux editor.
 
-![[elevenpad-light.png]]
+![[elevenpad-light.png|Elevenpad in the light theme, with two tabs and the Windows 11 title bar]]
 
 *The light theme, drawn offscreen by shot.rs on a machine with no display.*
 
@@ -10,7 +10,7 @@ By 3 November it was 17 commits, about 3,600 lines in src, and 15 tagged release
 
 The window is created with decorations off and a transparent surface, so every pixel of chrome, including the caption buttons and the 6 px band that resizes the window, is egui drawing. Most of the bugs came from that.
 
-![[elevenpad-frame-passes.png]]
+![[elevenpad-frame-passes.png|Diagram of the four paint passes: border, panels, window body, and a transparent surface clear]]
 
 *Four passes over a transparent surface. The border is a stroke inset by half a pixel.*
 
@@ -20,13 +20,13 @@ The border left a black band on X11. I stroked a 1 px frame on the window edge, 
 
 Plain X11 needed the window actually cut. src/shape.rs is about 150 lines that use the X Shape extension through x11rb: find the app window by _NET_WM_PID, fall back to WM_CLASS containing "elevenpad", draw a filled polygon into a 1 bit pixmap (nine points per corner), and apply it as the BOUNDING shape. A maximized window gets a plain rectangle. Each apply opens its own X connection and walks the root window's children on a background thread, so it runs only after a size change of more than a pixel, at most every 0.15 seconds, and only one at a time behind an AtomicBool. Windows can disappear mid-walk, so those errors are dropped. On Wayland the whole thing returns early and the compositor uses the alpha channel.
 
-![[elevenpad-shape-mask.png]]
+![[elevenpad-shape-mask.png|Diagram of the X11 shape mask: find the window, draw a 1-bit mask, apply the bounding shape, rounded window]]
 
 *What shape.rs does, once per resize. None of it runs on Wayland.*
 
 Since there are no decorations, the last problem was resizing. native_resize hit tests a 6 px band inside each edge every frame, sends BeginResize, and then removes the pointer press from the event queue so the widget underneath the border does not also react to it. Without that, the widget under the border would see the press as well.
 
-![[elevenpad-dark.png]]
+![[elevenpad-dark.png|Elevenpad in the dark theme]]
 
 *The same frame in the dark palette.*
 
@@ -51,7 +51,7 @@ The lag had a second cause. Resize events arrive coalesced, so the compositor ke
 
 src/syntax.rs is a hand written scanner over bytes, not a parser. Comments go first, then strings, numbers and identifiers, one pass per layout, no dependencies, and it falls back to plain text above 300 KB. Rust gets a special case: an apostrophe can start a char literal or a lifetime, so it counts as a literal only when a closing quote turns up within the next five bytes. An identifier followed by a parenthesis is a function, a leading uppercase word is a type, and the keyword tables cover 13 languages. JSON keys take the function colour when the next non space byte is a colon. It is not a real highlighter, but it runs inside the layout callback on every keystroke, and the plain fallback during a resize is why the window still tracks the pointer.
 
-![[elevenpad-syntax.png]]
+![[elevenpad-syntax.png|Rust syntax highlighting in the Elevenpad editor]]
 
 *Rust highlighting, no parser and no tree-sitter.*
 
@@ -63,7 +63,7 @@ The build machine has no display, so I could not look at the app there while bui
 
 src/bin/shot.rs runs the whole UI inside an egui::Context with a fake 1040 by 700 viewport, sends synthetic hover, press, click and resize events, tessellates the output, and renders it with egui_wgpu into an offscreen texture on Vulkan, which on a headless box means lavapipe. It copies the texture back through a buffer, respecting COPY_BYTES_PER_ROW_ALIGNMENT (rows are padded to 256 bytes and stripped again), and writes a PNG. Flags pick the state: --dark, --find, --syntax, --save-dialog, --rows, --hover-at=x,y, --press-at=x,y, --resize-test. The screenshots in the README come from this binary, and --resize-test prints the viewport commands, which is how I checked that BeginResize fires from the border band without a compositor.
 
-![[elevenpad-find.png]]
+![[elevenpad-find.png|The find bar open over the editor]]
 
 *The find bar, one of the states shot.rs can render without a display.*
 
