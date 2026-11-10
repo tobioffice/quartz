@@ -1,38 +1,56 @@
-Windows 11 Notepad is one of the few default apps I like. It opens fast, keeps tabs, and does not ask me to create a project before I can type a sentence. I wanted that same window on Linux, as one native binary with no Electron, GTK, Qt or web view. I called the project Elevenpad and started on 2 November, in Rust with egui and eframe.
+Windows 11 Notepad is one of the few default apps I like. It opens fast, keeps tabs, and does not ask me to create a project before I can type a sentence. I wanted that same window on Linux as one native binary, with no Electron, GTK, Qt or web view behind it. I called the project Elevenpad, started on 2 November, and wrote it in Rust with egui and eframe.
 
-The first commit already had tabs, find and replace, CRLF handling, light and dark themes, native window drag and resize, and an AppImage script. The text area is an egui TextEdit. Around it is a title bar, tab strip, menu bar and status bar that I drew myself, because the point was to match the Windows 11 app rather than make another generic Linux editor. By the end of the next day it also had syntax highlighting, Windows 11 style open and save dialogs, and the window fixes below.
+By 3 November it was 17 commits, about 3,600 lines in src, and 15 tagged releases from 0.2.0 to 0.4.9. The text editor was the easy half. egui already has a multiline TextEdit, so the work went into the frame: a title bar, tab strip, menu bar, status bar and two file dialogs that I drew myself, because matching the Windows 11 app matters more than being another generic Linux editor.
 
-## The window chrome fought back
+## The frame is the app
 
-The editor was the easy half. The frame around it caused most of the bugs.
+The window is created with decorations off and a transparent surface, so every pixel of chrome, including the caption buttons and the 6 px band that resizes the window, is egui drawing. Most of the bugs came from that.
 
-I wanted the rounded Windows 11 window: a transparent surface, a 1 px border, and a shadow from the compositor. eframe clears every frame with rgba(12, 12, 12, 180) by default. That dark wash sat on the surface before my panels painted, so transparency did nothing until I set the clear color to alpha zero.
+Transparency did nothing at first. eframe clears each frame with rgba(12, 12, 12, 180) before any app code runs, so a dark wash sat under my panels and the corners looked dirty instead of cut out. clear_color now returns transparent when rounded corners are on, and the palette window colour when they are off. Fixing that exposed a second problem: at fractional scaling factors the panels leave a subpixel gap between them, and a transparent clear showed a 1 px line of desktop through the middle of the window. The app now paints the window body once into the background layer, rounded, before any panel draws on top.
 
-The border was the next problem. I stroked a 1 px frame on the window edge, which puts half of the stroke outside the opaque fill. On X11 without a compositing manager, that half pixel showed up as a black band around the window. The stroke now sits inset by half a pixel, and rounded corners default to on only when WAYLAND_DISPLAY is set. The View menu can switch them either way.
+The border left a black band on X11. I stroked a 1 px frame on the window edge, which puts half the stroke outside the opaque fill, and without a compositing manager that half pixel rendered black. The stroke is now inset by half a pixel. Rounded corners default to on only when WAYLAND_DISPLAY is set, since plain X11 cannot do them with alpha, and the View menu can switch them either way.
 
-Plain X11 needed an actual cut in the window, not just a transparent surface. src/shape.rs is about 150 lines that use the X Shape extension through x11rb. It finds the app window by _NET_WM_PID, falls back to WM_CLASS, then applies a rounded bounding region. A maximized window gets a rectangle instead. The mask updates only when the window size changes by more than a pixel, at most every 0.15 seconds, and it runs on its own thread. Windows can disappear while it walks the tree, so those errors are ignored.
+Plain X11 needed the window actually cut. src/shape.rs is about 150 lines that use the X Shape extension through x11rb: find the app window by _NET_WM_PID, fall back to WM_CLASS containing "elevenpad", draw a filled polygon into a 1 bit pixmap (nine points per corner), and apply it as the BOUNDING shape. A maximized window gets a plain rectangle. Each apply opens its own X connection and walks the root window's children on a background thread, so it runs only after a size change of more than a pixel, at most every 0.15 seconds, and only one at a time behind an AtomicBool. Windows can disappear mid-walk, so those errors are dropped. On Wayland the whole thing returns early and the compositor uses the alpha channel.
 
-The offscreen renderer could not show this one. I only saw the black corners after dragging the window into a bare X11 session.
+Since there are no decorations, the last problem was resizing. native_resize hit tests a 6 px band inside each edge every frame, sends BeginResize, and then removes the pointer press from the event queue so the widget underneath the border does not also react to it. Without that, the widget under the border would see the press as well.
 
-## Vulkan lost the resize test
+## The renderer chose itself
 
-The renderer gave me the next bug. With wgpu on Vulkan, resizing under Wayland with an NVIDIA driver lagged behind the pointer and then jumped to the new size when I let go. The same build through glow, eframe's OpenGL backend, resized smoothly. OpenGL is now the default, --wgpu opts back into Vulkan, and a failed GL context falls back to wgpu instead of exiting. I would rather not put a renderer flag in a text editor, but the Vulkan path still lags on that driver.
+The first builds ran wgpu on Vulkan. Dragging the window edge under Wayland on an NVIDIA driver, the content lagged behind the pointer and jumped to the new size when I let go. The same code through glow, eframe's OpenGL backend, resized smoothly. OpenGL is the default now, --wgpu opts back into Vulkan, and a failed GL context does not exit the app:
 
-Resize events also arrive coalesced, so the compositor kept stretching the last frame. The app now requests repaints for 350 ms after each size change and skips syntax tokenisation on those frames, since that is the expensive part.
-
-Two smaller bugs came from the same morning. Hover was computed from the pointer position instead of egui's interaction layering, so the close button vanished just as the pointer reached it. And the dark palette built translucent colors with from_rgba_premultiplied and full RGB channels, which is an invalid premultiplied value: hovered menu buttons came out as solid white blobs. Switching those entries to from_rgba_unmultiplied fixed it.
-
-## What is in 0.4.9
-
-I tagged a release after most fixes, so the version went from 0.4.0 to 0.4.9 in one morning. The latest release has two files, an AppImage of about 6.5 MB and a tarball of about 6.1 MB. I downloaded the tarball on a headless machine and ran it:
-
-```
-$ ./elevenpad --version
-Elevenpad 0.4.9
+```rust
+match launch(preferred, files.clone(), transparent) {
+    Ok(()) => Ok(()),
+    Err(error) if !use_wgpu => {
+        eprintln!("OpenGL renderer failed ({error}); falling back to wgpu");
+        launch(eframe::Renderer::Wgpu, files, transparent)
+    }
+    Err(error) => Err(error),
+}
 ```
 
-The help output still lists --wgpu and --gl, which is how I know the renderer switch survived packaging.
+That re-enters run_native rather than swapping the renderer in place. It is not elegant, but it works, and the flag survives packaging.
 
-The UI can render without a window too. src/bin/shot.rs draws the app offscreen to a PNG, with flags for the dark theme, find bar, syntax highlighting, save dialog, hover positions and a resize test. I could look at the light and dark layouts without starting a compositor, which matters on a build machine with no display.
+The lag had a second cause. Resize events arrive coalesced, so the compositor kept stretching the last frame. The app now requests repaints for 350 ms after any size change and, during that window, lays the text out plain with no syntax pass. The tokenizer turned out to be the expensive part of the frame.
 
-Distribution is still rough. The AppImage needs FUSE 2, or the extract and run flag, and the binary needs glibc 2.39 or newer, so an older distro has to build from source. The release is x86_64 only, and the only formats are the AppImage and the tarball. Both are on [GitHub](https://github.com/tobioffice/elevenpad).
+src/syntax.rs is a hand written scanner over bytes, not a parser. Comments go first, then strings, numbers and identifiers, one pass per layout, no dependencies, and it falls back to plain text above 300 KB. Rust gets a special case: an apostrophe can start a char literal or a lifetime, so it counts as a literal only when a closing quote turns up within the next five bytes. An identifier followed by a parenthesis is a function, a leading uppercase word is a type, and the keyword tables cover 13 languages. JSON keys take the function colour when the next non space byte is a colon. It is not a real highlighter, but it runs inside the layout callback on every keystroke, and the plain fallback during a resize is why the window still tracks the pointer.
+
+Two smaller bugs came from the same morning. Hover was computed from the pointer position instead of egui's interaction layering, so the close button vanished just as the pointer reached it. And the dark palette built translucent colours with from_rgba_premultiplied and full RGB values, which is an invalid premultiplied colour, so hovered menu entries came out as solid white blobs. Switching those to from_rgba_unmultiplied fixed it.
+
+## Testing a window without a window
+
+The build machine has no display, so I could not look at the app there while building it. That produced two extra binaries.
+
+src/bin/shot.rs runs the whole UI inside an egui::Context with a fake 1040 by 700 viewport, sends synthetic hover, press, click and resize events, tessellates the output, and renders it with egui_wgpu into an offscreen texture on Vulkan, which on a headless box means lavapipe. It copies the texture back through a buffer, respecting COPY_BYTES_PER_ROW_ALIGNMENT (rows are padded to 256 bytes and stripped again), and writes a PNG. Flags pick the state: --dark, --find, --syntax, --save-dialog, --rows, --hover-at=x,y, --press-at=x,y, --resize-test. The screenshots in the README come from this binary, and --resize-test prints the viewport commands, which is how I checked that BeginResize fires from the border band without a compositor.
+
+Drawing is not the same as interaction, so src/bin/probe.rs clicks three points in the editor and one in the tab strip, then prints which egui id ends up focused. It also presses three positions on the tab strip, two empty and one on a tab, and prints the viewport commands for each so I could see where StartDrag is requested. The same probe checks that list_dir hides dot entries by default and that clear_color really does return alpha zero when rounded corners are on.
+
+The document model has three tests of its own: a CRLF round trip that reads one\r\ntwo\r\n, appends a line and compares the bytes after saving, line and column conversion for go to line, and undo then redo.
+
+## What is still rough
+
+Distribution. The prebuilt binary needs glibc 2.39, so Ubuntu 24.04, Fedora 40, Debian 13 or newer, and an older distro has to build from source. The AppImage needs FUSE 2 unless it is started with --appimage-extract-and-run. It is x86_64 only, about 6.5 MB, next to a 6.1 MB tarball, built by a script that assembles an AppDir, strips the binary, writes the .desktop file and calls appimagetool. There is no deb, Flatpak or AUR package.
+
+Editing. Undo keeps full copies of the text and stops at 200 entries, so memory grows with the document rather than the edit. Highlighting switches off above 300 KB. Files are read as lossy UTF-8 with no encoding picker, which is a real gap for a Windows replacement. The file dialogs are drawn in the app instead of using the desktop portal, so they do not know about bookmarks, recent files or GVFS mounts. Copilot, rewrite, spell check and the formatting toolbar are visible but stubbed, and print is disabled.
+
+What exists is the part I actually use. It opens from the file manager, keeps tabs, has find and replace, preserves CRLF and the BOM on save, and draws a rounded window that looks like the one I left behind, from a single binary with no toolkit underneath. Code is on GitHub: https://github.com/tobioffice/elevenpad
