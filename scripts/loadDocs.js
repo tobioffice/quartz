@@ -31,7 +31,7 @@ export const loadDocs = (filePath) => {
       } else if (entry.isFile() && entry.name.endsWith(".md")) {
         const cleanDir = dir.replace(/^\.\/content|^content/, "")
         const cleanName = entry.name.replace(/&/g, "-and-").replace(/ /g, "-").slice(0, -3)
-        const source_url = "https://blog.tobioffice.dev" + cleanDir + "/" + cleanName
+        const source_url = "https://blog.tobioffice.online" + cleanDir + "/" + cleanName
         const content = fs.readFileSync(fullPath, "utf-8")
         documents.push({
           pageContent: content,

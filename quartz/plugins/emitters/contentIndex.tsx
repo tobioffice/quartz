@@ -86,7 +86,7 @@ function generateRSSFeed(cfg: GlobalConfiguration, idx: ContentIndexMap, limit?:
       <description>${!!limit ? i18n(cfg.locale).pages.rss.lastFewNotes({ count: limit }) : i18n(cfg.locale).pages.rss.recentNotes} on ${escapeHTML(
         cfg.pageTitle,
       )}</description>
-      <generator>Quartz -- blog.tobioffice.dev</generator>
+      <generator>Quartz -- blog.tobioffice.online</generator>
       ${items}
     </channel>
   </rss>`

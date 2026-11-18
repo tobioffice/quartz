@@ -4,7 +4,7 @@ title: "Quartz Showcase"
 
 Want to see what Quartz can do? Here are some cool community gardens:
 
-- [Quartz Documentation (this site!)](https://blog.tobioffice.dev/)
+- [Quartz Documentation (this site!)](https://blog.tobioffice.online/)
 - [Jacky Zhao's Garden](https://jzhao.xyz/)
 - [Aaron Pham's Garden](https://aarnphm.xyz/)
 - [The Pond](https://turntrout.com/welcome)

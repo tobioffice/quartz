@@ -7,7 +7,7 @@
 - [Email](mailto:muraliaggipothu@gmail.com)
 
 ## Content & Publications
-- [Blog](https://blog.tobioffice.dev)
+- [Blog](https://blog.tobioffice.online)
 - [YouTube](https://www.youtube.com/@tobibasics)
 
 

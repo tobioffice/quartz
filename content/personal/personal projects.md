@@ -7,7 +7,7 @@
 - [WLKATA_US](https://youtu.be/7D_TxVvmXgU) - Computer vision system for automated biscuit quality assessment
 
 ### Web Development
-- [quartz](https://blog.tobioffice.dev) - Customized Quartz v4 for Obsidian to blog deployment
+- [quartz](https://blog.tobioffice.online) - Customized Quartz v4 for Obsidian to blog deployment
 - [TaskNest](https://github.com/tobioffice/TaskNest) - Task management application
 - [hacksprint](https://librarypro.tobioffice.dev) - Full-stack library management system
 - [NbkristWeb](https://github.com/tobioffice/NbkristWeb) - Web platform extending NbkristQik bot
